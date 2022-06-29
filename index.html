@@ -1,1 +1,190 @@
-<h1>qwerty</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="MobileOptimized" content="176" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="robots" content="noindex, nofollow" />
+    <script src="https://tg.dev/js/telegram-web-app.js?19"></script>
+    <title>Track time</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" >
+
+    <style>
+        body {
+            font-family: "Roboto";
+        }
+        .calendar-week {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            align-items: center;
+            border-bottom: #dadce0 1px solid;
+        }
+
+        .calendar-day {
+            display: flex;
+            width: 14%;
+            aspect-ratio: 1 / 1;
+            border-right: #dadce0 1px solid;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: "Roboto";
+        }
+        .calendar-day-date {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            font-size: 2vw;
+            width: 100%;
+        }
+        .calendar-day-date-text {
+            padding-top: 0.2vw;
+            padding-right: 0.6vw;
+            color: #4caf50;
+        }
+        .calendar-wrapper {
+            border-left: #dadce0 1px solid;
+            border-top: #dadce0 1px solid;
+        }
+        .tracked-time {
+            font-size: 6vw;
+            margin: auto;
+            color: #37474f;
+            font-family: "Roboto";
+        }
+        .weekend {
+            background-color: #D2D2D2;
+        }
+        .month-title {
+            font-size: 4vw;
+            padding-top: 0.2vw;
+            padding-right: 2vw;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            color: #4caf50;
+            font-family: "Roboto";
+            background-color: #37474f;
+        }
+        .month-title-track {
+            font-size: 4vw;
+        }
+    </style>
+</head>
+<body>
+
+<div data-bind="text: debugData"></div>
+
+<div data-bind="foreach: months" class="calendar-wrapper">
+    <div class="month-title">
+        <span data-bind="text: $data.month"></span>
+        &nbsp;
+        <span class="month-title-track" data-bind="text: $data.track"></span>
+    </div>
+    <div data-bind="foreach: $data.days" class="calendar-wrapper">
+        <div data-bind="foreach: $data" class="calendar-week">
+            <div class="calendar-day" data-bind="css: {weekend: $data.isWeekend}">
+                <div class="calendar-day-date">
+                    <div class="calendar-day-date-text" data-bind="text: $data.shortDate"></div>
+                </div>
+                <div class="tracked-time" data-bind="text: $data.trackedTime"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-joda/1.7.1/js-joda.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@js-joda/locale_en@4.7.0/dist/index.min.js"></script>
+<script>
+    function AppViewModel(beData) {
+        const LocalDate = JSJoda.LocalDate;
+        const DateTimeFormatter = JSJoda.DateTimeFormatter;
+        const monthsUk = ['Cіч.', 'Лют.', 'Бер.', 'Квіт.', 'Трав.', 'Черв.', 'Лип.', 'Серп.', 'Вер.', 'Жовт.', 'Лист.', 'Груд.'];
+        const monthsNameUk = ['Cічень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+
+
+        this.months = getMonths();
+
+
+        function getMonths() {
+            let now = LocalDate.now();
+            let prevMonth = now.minusMonths(1);
+            const beData = getBEData().data;
+            return [{
+                month: monthsNameUk[prevMonth.month().value() - 1],
+                days: getDays(prevMonth),
+                track: ` (${beData.prevMonthSpendTime} / ${beData.prevMonthWorkingHours})`
+            }, {
+                month: monthsNameUk[now.month().value() - 1] ,
+                days: getDays(now),
+                track: ` (${beData.currentMonthSpendTime} / ${beData.currentMonthWorkingHours})`
+            }];
+        }
+
+        function getDays(now) {
+            const format = DateTimeFormatter.ofPattern('d').withLocale(JSJodaLocale.Locale.ENGLISH);
+            const startDayOfWeek = LocalDate.of(now.year(), now.month(), 1).dayOfWeek().value();
+            const endDayOfWeek = LocalDate.of(now.year(), now.month(), now.lengthOfMonth()).dayOfWeek().value();
+            const days = [[]];
+            let row = 0
+            for (let i = 1; i < startDayOfWeek; i++) {
+                days[row].push({
+                    weekday: i,
+                    empty: true
+                });
+            }
+
+            const beData = getBEData();
+            const tracks = beData.data['timeTracksByDay'];
+            const weekends = beData.data['weekends'];
+            this.debugData = "";// JSON.stringify(weekends);
+            for (let i = 1; i <= now.lengthOfMonth(); i++) {
+
+                const date = LocalDate.of(now.year(), now.month(), i);
+                const dateString = date.toString();
+                const shortDate = date.format(format) + ' ' + monthsUk[date.month().value() - 1];
+                const weekday = date.dayOfWeek().value()
+                if (weekday === 1) {
+                    row = row + 1;
+                    days[row] = [];
+                }
+                const isWeekend = weekends ? weekends[dateString] : false;
+                days[row].push({
+                    weekday: date.dayOfWeek().value(),
+                    date: dateString,
+                    shortDate: shortDate,
+                    empty: false,
+                    trackedTime: tracks && tracks[dateString] ? tracks[dateString] : (isWeekend ? '' : 0),
+                    isWeekend: isWeekend
+                });
+            }
+            for (let i = endDayOfWeek + 1; i <= 7; i++) {
+                days[row].push({
+                    weekday: i,
+                    empty: true
+                });
+            }
+            return days;
+        }
+
+        function getBEData() {
+            return {data: beData};
+        }
+    }
+
+
+    let appViewModel = new AppViewModel();
+    ko.applyBindings(appViewModel);
+    Telegram.WebApp.ready();
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
