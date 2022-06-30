@@ -1,0 +1,61 @@
+body {
+    font-family: "Roboto";
+}
+.calendar-week {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: #dadce0 1px solid;
+}
+
+.calendar-day {
+    display: flex;
+    width: 14%;
+    aspect-ratio: 1 / 1;
+    border-right: #dadce0 1px solid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Roboto";
+}
+.calendar-day-date {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-size: 2vw;
+    width: 100%;
+}
+.calendar-day-date-text {
+    padding-top: 0.2vw;
+    padding-right: 0.6vw;
+    color: #4caf50;
+}
+.calendar-wrapper {
+    border-left: #dadce0 1px solid;
+    border-top: #dadce0 1px solid;
+}
+.tracked-time {
+    font-size: 6vw;
+    margin: auto;
+    color: #37474f;
+    font-family: "Roboto";
+}
+.weekend {
+    background-color: #D2D2D2;
+}
+.month-title {
+    font-size: 4vw;
+    padding-top: 0.2vw;
+    padding-right: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #4caf50;
+    font-family: "Roboto";
+    background-color: #37474f;
+}
+.month-title-track {
+    font-size: 4vw;
+}
