@@ -48,14 +48,30 @@ body {
 .month-title {
     font-size: 4vw;
     padding-top: 0.2vw;
-    padding-right: 2vw;
+    padding-left: 2vw;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     color: #4caf50;
     font-family: "Roboto";
     background-color: #37474f;
+    padding-right: 2vw;
 }
+
 .month-title-track {
     font-size: 4vw;
+}
+
+.menu-icon {
+    font-size: 3vw;
+}
+
+.menu-button {
+    background-color: #4b616c;
+    height: 4vw;
+    width: 4vw;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }

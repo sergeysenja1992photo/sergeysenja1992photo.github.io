@@ -1,12 +1,16 @@
 function AppViewModel(beData) {
+    const self = this;
     const LocalDate = JSJoda.LocalDate;
     const DateTimeFormatter = JSJoda.DateTimeFormatter;
     const monthsUk = ['Cіч.', 'Лют.', 'Бер.', 'Квіт.', 'Трав.', 'Черв.', 'Лип.', 'Серп.', 'Вер.', 'Жовт.', 'Лист.', 'Груд.'];
     const monthsNameUk = ['Cічень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
 
-
+    this.calendarMode = ko.observable(true);
     this.months = getMonths();
 
+    this.changeMode = function() {
+        self.calendarMode(!self.calendarMode());
+    }
 
     function getMonths() {
         let now = LocalDate.now();

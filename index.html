@@ -9,18 +9,25 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Track time</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" >
     <link rel="stylesheet" href="/bot.css" >
 </head>
 <body>
 
-<div data-bind="text: debugData"></div>
-
 <div data-bind="foreach: months" class="calendar-wrapper">
     <div class="month-title">
-        <span data-bind="text: $data.month"></span>
-        &nbsp;
-        <span class="month-title-track" data-bind="text: $data.track"></span>
+        <div>
+            <span data-bind="text: $data.month"></span>&nbsp<span class="month-title-track" data-bind="text: $data.track"></span>
+        </div>
+        <div>
+        <div data-bind="click: $root.changeMode, if: $root.calendarMode">
+            <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">menu</i></a>
+        </div>
+        <div data-bind="click: $root.changeMode, ifnot: $root.calendarMode">
+            <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">apps</i></a>
+        </div>
+        </div>
     </div>
     <div data-bind="foreach: $data.days" class="calendar-wrapper">
         <div data-bind="foreach: $data" class="calendar-week">
