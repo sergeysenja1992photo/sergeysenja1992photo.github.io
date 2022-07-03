@@ -87,7 +87,7 @@ function initView(data) {
 const urlParams = new URLSearchParams(window.location.search);
 const access_token = urlParams.get('access_token');
 $.ajax({
-    url: "hhttps://us-central1-silicon-keel-290919.cloudfunctions.net/timetrack?access_token=" + access_token,
+    url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/timetrack?access_token=" + access_token,
 }).done(function( data ) {
     console.log(data);
     initView(data)
