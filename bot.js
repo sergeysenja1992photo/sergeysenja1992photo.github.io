@@ -87,7 +87,9 @@ function initView(data) {
 const urlParams = new URLSearchParams(window.location.search);
 const access_token = urlParams.get('access_token');
 $.ajax({
-    url: "https://hr.stage.xm-online.com/entity/api/functions/WEB-PAGE-CONTENT?access_token=" + access_token,
-    dataType: "jsonp"
+    url: "hhttps://us-central1-silicon-keel-290919.cloudfunctions.net/timetrack?access_token=" + access_token,
+}).done(function( data ) {
+    console.log(data);
+    initView(data)
 });
 
