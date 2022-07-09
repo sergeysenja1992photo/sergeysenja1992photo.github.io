@@ -10,6 +10,11 @@ function AppViewModel(beData) {
     this.changeMode = function() {
         self.calendarMode(!self.calendarMode());
     }
+    this.moveToDay = function(context) {
+        self.calendarMode(false);
+        $('html,body').animate({ scrollTop: $('#DAY_' + context.date).offset().top }, 200);
+
+    }
 
     function getTracks(now) {
         const month = now.month();

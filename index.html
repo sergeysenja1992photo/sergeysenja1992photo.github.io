@@ -32,7 +32,8 @@
     <div data-bind="if: $root.calendarMode">
         <div data-bind="foreach: $data.days" class="calendar-wrapper">
             <div data-bind="foreach: $data" class="calendar-week">
-                <div class="calendar-day waves-effect waves-green" data-bind="css: {weekend: $data.isWeekend}">
+                <div class="calendar-day waves-effect waves-green"
+                     data-bind="click: $root.moveToDay, css: {weekend: $data.isWeekend}">
                     <div class="calendar-day-date">
                         <div class="calendar-day-date-text" data-bind="text: $data.shortDate"></div>
                     </div>
@@ -43,7 +44,7 @@
     </div>
     <div data-bind="ifnot: $root.calendarMode" class="tracks-wrapper">
         <div data-bind="foreach: $data.tracks">
-            <div class="day-title">
+            <div class="day-title" data-bind="attr: { id: 'DAY_' + $data.day }">
                 <div>
                     <span data-bind="text: $data.day"></span>&nbsp( <span data-bind="text: $data.sum"></span> / 8 )
                 </div>
