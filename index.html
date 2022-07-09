@@ -53,12 +53,29 @@
                     <div class="time-track">
                         <div class="col m12">
                             <div class="card blue-grey darken-1">
+                                <div class="white-text issue-project-name-wrapper">
+                                    <span class="issue-project-name" data-bind="text: $data.name"></span>
+                                </div>
                                 <div class="card-content white-text issue-subject">
                                     <p data-bind="text: $data.subject"></p>
                                 </div>
                                 <div class="card-action issue-actions">
-                                    <a href="#"><span class="issue-order-name" data-bind="text: $data.orderName"></span></a>
-                                    <a href="#"><span class="issue-hours" data-bind="text: $data.hours"></span></a>
+                                    <a href="#" class="issue-actions-item">
+                                        <div>
+                                            <span class="issue-order-name" data-bind="text: $data.orderName"></span>
+                                            <span class="issue-order-name">
+                                                <i class="material-icons menu-icon">edit</i>
+                                            </span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="issue-actions-item">
+                                        <div>
+                                            <span class="issue-hours" data-bind="text: $data.hours"></span>
+                                            <span class="issue-hours">
+                                                <i class="material-icons menu-icon">edit</i>
+                                            </span>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

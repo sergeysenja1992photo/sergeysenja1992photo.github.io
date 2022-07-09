@@ -55,6 +55,10 @@ body {
 
 .issue-subject {
     font-size: 2vw;
+    padding: 2vw!important;
+    padding-left: 1vw!important;
+    padding-right: 1vw!important;
+    border-top: 1px solid rgba(160,160,160,0.2);
 }
 
 .issue-actions {
@@ -63,16 +67,29 @@ body {
     color: #4caf50;
 
     align-items: center;
-    padding-bottom: 0!important;
-    padding-top: 0!important;;
+    padding: 0!important;
+    padding-left: 1vw!important;
+    margin-right: 1.5vw!important;
+}
+
+.issue-actions-item {
+    font-size: 4vw;
 }
 
 .issue-order-name {
-    font-size: 1vw;
+    font-size: 3vw;
+    font-weight: bold;
+}
+
+.issue-project-name-wrapper {
+    font-size: 1.4vw;
+    padding: 0.5vw!important;
+    padding-left: 1vw!important;
 }
 
 .issue-hours {
     font-size: 3vw;
+    font-weight: bold;
 }
 
 .day-title {
