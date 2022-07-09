@@ -18,7 +18,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     font-family: "Roboto";
+
+
 }
 .calendar-day-date {
     display: flex;
@@ -45,6 +48,46 @@ body {
 .weekend {
     background-color: #D2D2D2;
 }
+
+.tracks-wrapper {
+    background-color: #37474f;
+}
+
+.issue-subject {
+    font-size: 2vw;
+}
+
+.issue-actions {
+    display: flex;
+    justify-content: space-between;
+    color: #4caf50;
+
+    align-items: center;
+    padding-bottom: 0!important;
+    padding-top: 0!important;;
+}
+
+.issue-order-name {
+    font-size: 1vw;
+}
+
+.issue-hours {
+    font-size: 3vw;
+}
+
+.day-title {
+    font-size: 3vw;
+    padding-top: 0.2vw;
+    padding-left: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #37474f;
+    font-family: "Roboto";
+    background-color: #4caf50;
+    padding-right: 2vw;
+}
+
 .month-title {
     font-size: 4vw;
     padding-top: 0.2vw;
@@ -63,7 +106,7 @@ body {
 }
 
 .menu-icon {
-    font-size: 3vw;
+    font-size: 2vw!important;
 }
 
 .menu-button {

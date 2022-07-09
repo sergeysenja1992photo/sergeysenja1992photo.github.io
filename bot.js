@@ -7,9 +7,27 @@ function AppViewModel(beData) {
 
     this.calendarMode = ko.observable(true);
     this.months = getMonths();
-
     this.changeMode = function() {
         self.calendarMode(!self.calendarMode());
+    }
+
+    function getTracks(now) {
+        const month = now.month();
+        const dataTracks = getBEData().data.tracks;
+        const timeTracksByDay = getBEData().data.timeTracksByDay
+        const days = Object.keys(dataTracks).sort();
+        const tracks = [];
+        for (let i = 0; i < days.length; i++) {
+            let day = days[i];
+            if (LocalDate.parse(day).month() === month) {
+                tracks.push({
+                    day: day,
+                    tracks: dataTracks[day],
+                    sum: timeTracksByDay[day]
+                });
+            }
+        }
+        return tracks;
     }
 
     function getMonths() {
@@ -19,11 +37,13 @@ function AppViewModel(beData) {
         return [{
             month: monthsNameUk[prevMonth.month().value() - 1],
             days: getDays(prevMonth),
-            track: ` (${beData.prevMonthSpendTime} / ${beData.prevMonthWorkingHours})`
+            track: ` (${beData.prevMonthSpendTime} / ${beData.prevMonthWorkingHours})`,
+            tracks: getTracks(prevMonth)
         }, {
             month: monthsNameUk[now.month().value() - 1] ,
             days: getDays(now),
-            track: ` (${beData.currentMonthSpendTime} / ${beData.currentMonthWorkingHours})`
+            track: ` (${beData.currentMonthSpendTime} / ${beData.currentMonthWorkingHours})`,
+            tracks: getTracks(now)
         }];
     }
 
@@ -80,6 +100,7 @@ function AppViewModel(beData) {
 
 function initView(data) {
     let appViewModel = new AppViewModel(data);
+    console.log(appViewModel);
     ko.applyBindings(appViewModel);
     Telegram.WebApp.ready();
 }

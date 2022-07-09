@@ -29,13 +29,41 @@
         </div>
         </div>
     </div>
-    <div data-bind="foreach: $data.days" class="calendar-wrapper">
-        <div data-bind="foreach: $data" class="calendar-week">
-            <div class="calendar-day" data-bind="css: {weekend: $data.isWeekend}">
-                <div class="calendar-day-date">
-                    <div class="calendar-day-date-text" data-bind="text: $data.shortDate"></div>
+    <div data-bind="if: $root.calendarMode">
+        <div data-bind="foreach: $data.days" class="calendar-wrapper">
+            <div data-bind="foreach: $data" class="calendar-week">
+                <div class="calendar-day waves-effect waves-green" data-bind="css: {weekend: $data.isWeekend}">
+                    <div class="calendar-day-date">
+                        <div class="calendar-day-date-text" data-bind="text: $data.shortDate"></div>
+                    </div>
+                    <div class="tracked-time" data-bind="text: $data.trackedTime"></div>
                 </div>
-                <div class="tracked-time" data-bind="text: $data.trackedTime"></div>
+            </div>
+        </div>
+    </div>
+    <div data-bind="ifnot: $root.calendarMode" class="tracks-wrapper">
+        <div data-bind="foreach: $data.tracks">
+            <div class="day-title">
+                <div>
+                    <span data-bind="text: $data.day"></span>&nbsp( <span data-bind="text: $data.sum"></span> / 8 )
+                </div>
+            </div>
+            <div data-bind="foreach: $data.tracks">
+                <div>
+                    <div class="time-track">
+                        <div class="col m12">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text issue-subject">
+                                    <p data-bind="text: $data.subject"></p>
+                                </div>
+                                <div class="card-action issue-actions">
+                                    <a href="#"><span class="issue-order-name" data-bind="text: $data.orderName"></span></a>
+                                    <a href="#"><span class="issue-hours" data-bind="text: $data.hours"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
