@@ -10,9 +10,31 @@ function AppViewModel(beData) {
     this.changeMode = function() {
         self.calendarMode(!self.calendarMode());
     }
+
+    this.editMode = ko.observable(false);
+    this.editType = ko.observable("");
+    this.editHours = ko.observable(0);
+    this.editorTaskName = ko.observable("");
+    this.openEditHours = function(context) {
+        self.scrollPosition = document.documentElement.scrollTop;
+        self.editMode(true);
+        self.editHours(context.hours);
+        self.editorTaskName(context.subject);
+        $('#editHoursInput').focus();
+    }
+    this.closeEditHours = function() {
+        self.editMode(false);
+        $('html,body').animate({scrollTop: self.scrollPosition}, 10);
+    }
+
     this.moveToDay = function(context) {
-        self.calendarMode(false);
-        $('html,body').animate({ scrollTop: $('#DAY_' + context.date).offset().top }, 200);
+        setTimeout(function() {
+            self.calendarMode(false);
+            let offset = $('#DAY_' + context.date).offset();
+            if (offset) {
+                $('html,body').animate({scrollTop: offset.top}, 200);
+            }
+        }, 200);
 
     }
 

@@ -1,5 +1,5 @@
 body {
-    font-family: "Roboto";
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 .calendar-week {
     display: flex;
@@ -19,7 +19,7 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    font-family: "Roboto";
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 
 
 }
@@ -43,7 +43,7 @@ body {
     font-size: 6vw;
     margin: auto;
     color: #37474f;
-    font-family: "Roboto";
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 .weekend {
     background-color: #D2D2D2;
@@ -100,7 +100,7 @@ body {
     align-items: center;
     justify-content: space-between;
     color: #37474f;
-    font-family: "Roboto";
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
     background-color: #4caf50;
     padding-right: 2vw;
 }
@@ -113,7 +113,7 @@ body {
     align-items: center;
     justify-content: space-between;
     color: #4caf50;
-    font-family: "Roboto";
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
     background-color: #37474f;
     padding-right: 2vw;
 }
@@ -134,4 +134,45 @@ body {
     align-content: center;
     justify-content: center;
     align-items: center;
+}
+
+.hours-editor {
+    margin: 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    flex-wrap: nowrap;
+}
+
+.hours-editor input::placeholder {
+    font-size: 15vw;
+}
+.hours-editor input {
+    font-size: 15vw!important;
+    height: 20vw!important;
+}
+.hours-editor label {
+    font-size: 5vw;
+}
+
+.btn-editor {
+    width: 50%;
+    font-size: 4vw;
+    height: 10vw;
+    line-height: 10vw;
+}
+
+.btn-ok {
+    background-color: #37474f;
+    color: #4caf50;
+}
+
+.btn-cancel {
+    background-color: #ffffff;
+    color: #9e9e9e;
+}
+
+.editor-actions {
+    display: flex;
 }

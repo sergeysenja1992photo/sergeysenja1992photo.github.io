@@ -13,70 +13,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" >
     <link rel="stylesheet" href="/bot.css" >
 </head>
-<body>
+<body style="display: none;" data-bind="visible: true">
 
-<div data-bind="foreach: months" class="calendar-wrapper">
-    <div class="month-title">
-        <div>
-            <span data-bind="text: $data.month"></span>&nbsp<span class="month-title-track" data-bind="text: $data.track"></span>
-        </div>
-        <div>
-        <div data-bind="click: $root.changeMode, if: $root.calendarMode">
-            <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">menu</i></a>
-        </div>
-        <div data-bind="click: $root.changeMode, ifnot: $root.calendarMode">
-            <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">apps</i></a>
-        </div>
+
+<div data-bind="if: $root.editMode">
+    <div class="hours-editor">
+        <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours }"  type="number" inputmode="numeric">
+        <label for="editHoursInput" data-bind="text: $data.editorTaskName"></label>
+        <div class="editor-actions" >
+            <a class="waves-effect waves-light btn-large btn-editor btn-ok">Примінити</a>
+            <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours">Не приміняти</a>
         </div>
     </div>
-    <div data-bind="if: $root.calendarMode">
-        <div data-bind="foreach: $data.days" class="calendar-wrapper">
-            <div data-bind="foreach: $data" class="calendar-week">
-                <div class="calendar-day waves-effect waves-green"
-                     data-bind="click: $root.moveToDay, css: {weekend: $data.isWeekend}">
-                    <div class="calendar-day-date">
-                        <div class="calendar-day-date-text" data-bind="text: $data.shortDate"></div>
+</div>
+
+<div data-bind="ifnot: $root.editMode">
+    <div data-bind="foreach: months" class="calendar-wrapper">
+        <div class="month-title">
+            <div>
+                <span data-bind="text: $data.month"></span>&nbsp<span class="month-title-track" data-bind="text: $data.track"></span>
+            </div>
+            <div>
+            <div data-bind="click: $root.changeMode, if: $root.calendarMode">
+                <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">menu</i></a>
+            </div>
+            <div data-bind="click: $root.changeMode, ifnot: $root.calendarMode">
+                <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">apps</i></a>
+            </div>
+            </div>
+        </div>
+        <div data-bind="if: $root.calendarMode">
+            <div data-bind="foreach: $data.days" class="calendar-wrapper">
+                <div data-bind="foreach: $data" class="calendar-week">
+                    <div class="calendar-day waves-effect waves-green"
+                         data-bind="click: $root.moveToDay, css: {weekend: $data.isWeekend}">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-date-text" data-bind="text: $data.shortDate"></div>
+                        </div>
+                        <div class="tracked-time" data-bind="text: $data.trackedTime"></div>
                     </div>
-                    <div class="tracked-time" data-bind="text: $data.trackedTime"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <div data-bind="ifnot: $root.calendarMode" class="tracks-wrapper">
-        <div data-bind="foreach: $data.tracks">
-            <div class="day-title" data-bind="attr: { id: 'DAY_' + $data.day }">
-                <div>
-                    <span data-bind="text: $data.day"></span>&nbsp( <span data-bind="text: $data.sum"></span> / 8 )
-                </div>
-            </div>
+        <div data-bind="ifnot: $root.calendarMode" class="tracks-wrapper">
             <div data-bind="foreach: $data.tracks">
-                <div>
-                    <div class="time-track">
-                        <div class="col m12">
-                            <div class="card blue-grey darken-1">
-                                <div class="white-text issue-project-name-wrapper">
-                                    <span class="issue-project-name" data-bind="text: $data.name"></span>
-                                </div>
-                                <div class="card-content white-text issue-subject">
-                                    <p data-bind="text: $data.subject"></p>
-                                </div>
-                                <div class="card-action issue-actions">
-                                    <a href="#" class="issue-actions-item">
-                                        <div>
-                                            <span class="issue-order-name" data-bind="text: $data.orderName"></span>
-                                            <span class="issue-order-name">
-                                                <i class="material-icons menu-icon">edit</i>
-                                            </span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="issue-actions-item">
-                                        <div>
-                                            <span class="issue-hours" data-bind="text: $data.hours"></span>
-                                            <span class="issue-hours">
-                                                <i class="material-icons menu-icon">edit</i>
-                                            </span>
-                                        </div>
-                                    </a>
+                <div class="day-title" data-bind="attr: { id: 'DAY_' + $data.day }">
+                    <div>
+                        <span data-bind="text: $data.day"></span>&nbsp( <span data-bind="text: $data.sum"></span> / 8 )
+                    </div>
+                </div>
+                <div data-bind="foreach: $data.tracks">
+                    <div>
+                        <div class="time-track">
+                            <div class="col m12">
+                                <div class="card blue-grey darken-1">
+                                    <div class="white-text issue-project-name-wrapper">
+                                        <span class="issue-project-name" data-bind="text: $data.name"></span>
+                                    </div>
+                                    <div class="card-content white-text issue-subject">
+                                        <p data-bind="text: $data.subject"></p>
+                                    </div>
+                                    <div class="card-action issue-actions">
+                                        <a href="javascript:void(0)" class="issue-actions-item" data-bind="click: $root.openEditOrders">
+                                            <div>
+                                                <span class="issue-order-name" data-bind="text: $data.orderName"></span>
+                                                <span class="issue-order-name">
+                                                    <i class="material-icons menu-icon">edit</i>
+                                                </span>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:void(0)" class="issue-actions-item" data-bind="click: $root.openEditHours">
+                                            <div>
+                                                <span class="issue-hours" data-bind="text: $data.hours"></span>
+                                                <span class="issue-hours">
+                                                    <i class="material-icons menu-icon">edit</i>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
