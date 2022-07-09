@@ -153,7 +153,9 @@ body {
     height: 20vw!important;
 }
 .hours-editor label {
-    font-size: 5vw;
+    font-size: 2vw;
+    margin-bottom: 1vw;
+}
 }
 
 .btn-editor {
