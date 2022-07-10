@@ -39,7 +39,7 @@
 <div data-bind="if: $root.editMode">
     <div data-bind="if: $root.editType() == 'orders'">
         <form id="editOrdersForm" data-bind="submit: $root.updateOrders">
-            <div class="orders-editor inline">
+            <div class="orders-editor">
 
                 <div data-bind="foreach: $root.editorOrders">
                     <div>
@@ -47,6 +47,15 @@
                             <input name="order" data-bind="attr: {value: $root.id}" type="radio" />
                             <span data-bind="text: $data.name"></span>
                         </label>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="input-field col s12">
+                        <select id="order-select" data-bind="foreach: $root.editorOrders">
+                            <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
+                        </select>
+                        <label>Select order</label>
                     </div>
                 </div>
 

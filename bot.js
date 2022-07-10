@@ -57,6 +57,7 @@ function AppViewModel(beData) {
         self.editMode(true);
         self.editType('orders');
         self.trackHours("");
+        $('#order-select').formSelect();
     }
     this.closeEditOrders = function() {
         self.saveInProgress(false);
