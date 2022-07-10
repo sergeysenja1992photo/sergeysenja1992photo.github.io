@@ -39,31 +39,23 @@
 <div data-bind="if: $root.editMode">
     <div data-bind="if: $root.editType() == 'orders'">
         <form id="editOrdersForm" data-bind="submit: $root.updateOrders">
-            <div class="orders-editor">
+            <div class="orders-editor inline">
 
-                <div data-bind="foreach: $root.editorOrders">
-                    <div>
-                        <label>
-                            <input name="order" data-bind="attr: {value: $root.id}" type="radio" />
-                            <span data-bind="text: $data.name"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="input-field col s12">
+                <div class="input-field col s12">
+                    <div class="order-select">
+                        <span data-bind="text: $data.editorTaskDate"></span>
                         <select id="order-select" data-bind="foreach: $root.editorOrders">
                             <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
                         </select>
-                        <label>Select order</label>
                     </div>
+                    <div style="margin: 1vw;"></div>
+                    <span class="order-task-name" data-bind="text: $data.editorTaskName"></span>
+                    <div style="margin: 1vw;"></div>
                 </div>
 
                 <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
                     <div class="indeterminate"></div>
                 </div>
-
-                <div class="order-action-margin"></div>
 
                 <div class="editor-actions" >
                     <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateOrders, attr: {disabled: $root.saveInProgress}">Примінити</a>

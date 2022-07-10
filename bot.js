@@ -56,8 +56,12 @@ function AppViewModel(beData) {
         self.scrollPosition = document.documentElement.scrollTop;
         self.editMode(true);
         self.editType('orders');
+        self.editorTaskName(context.subject);
+        self.editorTaskDate(context.spent_on);
         self.trackHours("");
         $('#order-select').formSelect();
+        const instance = M.FormSelect.getInstance($('#order-select'));
+        instance.classes = ['order-select']
     }
     this.closeEditOrders = function() {
         self.saveInProgress(false);
