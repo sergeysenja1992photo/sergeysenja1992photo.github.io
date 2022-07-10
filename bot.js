@@ -51,6 +51,7 @@ function AppViewModel(beData) {
     // ================================
 
     this.editorOrders = getBEData().data.orders;
+    this.editorOrder = ko.observable("");
     this.openEditOrders = function(context) {
         self.saveInProgress(false);
         self.scrollPosition = document.documentElement.scrollTop;
@@ -58,10 +59,9 @@ function AppViewModel(beData) {
         self.editType('orders');
         self.editorTaskName(context.subject);
         self.editorTaskDate(context.spent_on);
+        self.editorOrder(context.order_id)
         self.trackHours("");
         $('#order-select').formSelect();
-        const instance = M.FormSelect.getInstance($('#order-select'));
-        instance.classes = ['order-select']
     }
     this.closeEditOrders = function() {
         self.saveInProgress(false);

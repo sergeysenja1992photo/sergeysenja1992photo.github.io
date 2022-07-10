@@ -44,7 +44,7 @@
                 <div class="input-field col s12">
                     <div class="order-select">
                         <span data-bind="text: $data.editorTaskDate"></span>
-                        <select id="order-select" data-bind="foreach: $root.editorOrders">
+                        <select id="order-select" data-bind="foreach: $root.editorOrders, value: $root.editorOrder">
                             <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
                         </select>
                     </div>
@@ -100,6 +100,9 @@
                 <div class="day-title" data-bind="attr: { id: 'DAY_' + $data.day }">
                     <div>
                         <span data-bind="text: $data.day"></span>&nbsp( <span data-bind="text: $data.sum"></span> / 8 )
+                    </div>
+                    <div>
+                        <a href="#" class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">arrow_upward</i></a>
                     </div>
                 </div>
                 <div data-bind="foreach: $data.tracks">
