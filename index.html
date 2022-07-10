@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=12.0, minimum-scale=1, user-scalable=yes"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="format-detection" content="telephone=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="MobileOptimized" content="176" />
@@ -15,23 +15,55 @@
 </head>
 <body style="display: none;" data-bind="visible: true">
 
-<form id="editHoursForm" data-bind="submit: $root.updateTrackTime">
-    <div data-bind="if: $root.editMode">
-        <div class="hours-editor inline">
-            <label for="editHoursInput" data-bind="text: $data.editorTaskDate"></label>
-            <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
-            <span data-bind="text: $data.editorTaskName"></span>
+<div data-bind="if: $root.editMode">
+    <div data-bind="if: $root.editType() == 'hours'">
+        <form id="editHoursForm" data-bind="submit: $root.updateTrackTime">
+            <div class="hours-editor inline">
+                <label for="editHoursInput" data-bind="text: $data.editorTaskDate"></label>
+                <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
+                <span data-bind="text: $data.editorTaskName"></span>
 
-            <div class="progress" data-bind="visible: $root.saveInProgress">
-                <div class="indeterminate"></div>
+                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
+                    <div class="indeterminate"></div>
+                </div>
+                <div class="editor-actions" >
+                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateTrackTime, attr: {disabled: $root.saveInProgress}">Примінити</a>
+                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                </div>
             </div>
-            <div class="editor-actions" >
-                <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateTrackTime, attr: {disabled: $root.saveInProgress}">Примінити</a>
-                <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
-            </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>
+
+
+<div data-bind="if: $root.editMode">
+    <div data-bind="if: $root.editType() == 'orders'">
+        <form id="editOrdersForm" data-bind="submit: $root.updateOrders">
+            <div class="orders-editor inline">
+
+                <div data-bind="foreach: $root.editorOrders">
+                    <div>
+                        <label>
+                            <input name="order" data-bind="attr: {value: $root.id}" type="radio" />
+                            <span data-bind="text: $data.name"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
+                    <div class="indeterminate"></div>
+                </div>
+
+                <div class="order-action-margin"></div>
+
+                <div class="editor-actions" >
+                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateOrders, attr: {disabled: $root.saveInProgress}">Примінити</a>
+                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditOrders, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div data-bind="ifnot: $root.editMode">
     <div data-bind="foreach: months" class="calendar-wrapper">
@@ -108,7 +140,7 @@
     </div>
 </div>
 
-<script src="https://tg.dev/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-joda/1.7.1/js-joda.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>

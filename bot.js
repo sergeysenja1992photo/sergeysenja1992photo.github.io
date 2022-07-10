@@ -21,21 +21,25 @@ function AppViewModel(beData) {
         }
     });
 
+    // ================================
+
     this.editHours = ko.observable(0);
     this.editorTaskName = ko.observable("");
     this.editorTaskDate = ko.observable("");
     this.trackHours = ko.observable("");
     this.openEditHours = function(context) {
+        self.saveInProgress(false);
         self.scrollPosition = document.documentElement.scrollTop;
         self.editMode(true);
         self.editHours(context.hours);
         self.editorTaskName(context.subject);
         self.editorTaskDate(context.spent_on);
         self.trackHours("");
-        self.editType = 'hours';
+        self.editType('hours');
         $('#editHoursInput').focus();
     }
     this.closeEditHours = function() {
+        self.saveInProgress(false);
         self.editMode(false);
         $('html,body').animate({scrollTop: self.scrollPosition}, 10);
     }
@@ -43,6 +47,28 @@ function AppViewModel(beData) {
         console.log(self.trackHours());
         self.saveInProgress(true);
     }
+
+    // ================================
+
+    this.editorOrders = getBEData().data.orders;
+    this.openEditOrders = function(context) {
+        self.saveInProgress(false);
+        self.scrollPosition = document.documentElement.scrollTop;
+        self.editMode(true);
+        self.editType('orders');
+        self.trackHours("");
+    }
+    this.closeEditOrders = function() {
+        self.saveInProgress(false);
+        self.editMode(false);
+        $('html,body').animate({scrollTop: self.scrollPosition}, 10);
+    }
+    this.updateOrders = function() {
+        console.log(self.trackHours());
+        self.saveInProgress(true);
+    }
+
+    // ================================
 
     this.moveToDay = function(context) {
         setTimeout(function() {
