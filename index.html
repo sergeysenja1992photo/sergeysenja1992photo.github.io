@@ -17,9 +17,11 @@
 
 <form id="editHoursForm" data-bind="submit: $root.updateTrackTime">
     <div data-bind="if: $root.editMode">
-        <div class="hours-editor">
+        <div class="hours-editor inline">
+            <label for="editHoursInput" data-bind="text: $data.editorTaskDate"></label>
             <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
-            <label for="editHoursInput" data-bind="text: $data.editorTaskName"></label>
+            <span data-bind="text: $data.editorTaskName"></span>
+
             <div class="progress" data-bind="visible: $root.saveInProgress">
                 <div class="indeterminate"></div>
             </div>

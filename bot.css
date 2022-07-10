@@ -158,6 +158,11 @@ body {
     font-size: 2.5vw;
     margin-bottom: 1vw;
 }
+.hours-editor span {
+    font-size: 2.5vw;
+    margin-bottom: 1vw;
+    color: #9e9e9e;
+}
 
 .btn-editor {
     width: 50%;

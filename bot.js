@@ -15,16 +15,24 @@ function AppViewModel(beData) {
     this.editType = ko.observable("");
     this.saveInProgress = ko.observable(false);
 
+    Telegram.WebApp.onEvent('backButtonClicked', function () {
+        if (self.editMode()) {
+            self.closeEditHours();
+        }
+    });
 
     this.editHours = ko.observable(0);
     this.editorTaskName = ko.observable("");
+    this.editorTaskDate = ko.observable("");
     this.trackHours = ko.observable("");
     this.openEditHours = function(context) {
         self.scrollPosition = document.documentElement.scrollTop;
         self.editMode(true);
         self.editHours(context.hours);
         self.editorTaskName(context.subject);
+        self.editorTaskDate(context.spent_on);
         self.trackHours("");
+        self.editType = 'hours';
         $('#editHoursInput').focus();
     }
     this.closeEditHours = function() {
