@@ -13,18 +13,27 @@ function AppViewModel(beData) {
 
     this.editMode = ko.observable(false);
     this.editType = ko.observable("");
+    this.saveInProgress = ko.observable(false);
+
+
     this.editHours = ko.observable(0);
     this.editorTaskName = ko.observable("");
+    this.trackHours = ko.observable("");
     this.openEditHours = function(context) {
         self.scrollPosition = document.documentElement.scrollTop;
         self.editMode(true);
         self.editHours(context.hours);
         self.editorTaskName(context.subject);
+        self.trackHours("");
         $('#editHoursInput').focus();
     }
     this.closeEditHours = function() {
         self.editMode(false);
         $('html,body').animate({scrollTop: self.scrollPosition}, 10);
+    }
+    this.updateTrackTime = function() {
+        console.log(self.trackHours());
+        self.saveInProgress(true);
     }
 
     this.moveToDay = function(context) {
@@ -107,7 +116,7 @@ function AppViewModel(beData) {
                 date: dateString,
                 shortDate: shortDate,
                 empty: false,
-                trackedTime: tracks && tracks[dateString] ? tracks[dateString] : (isWeekend ? '' : 0),
+                trackedTime: tracks && tracks[dateString] ? tracks[dateString] : (isWeekend ? '\xa0' : 0),
                 isWeekend: isWeekend
             });
         }

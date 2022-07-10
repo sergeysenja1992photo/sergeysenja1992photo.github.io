@@ -15,17 +15,21 @@
 </head>
 <body style="display: none;" data-bind="visible: true">
 
-
-<div data-bind="if: $root.editMode">
-    <div class="hours-editor">
-        <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours }"  type="number" inputmode="numeric">
-        <label for="editHoursInput" data-bind="text: $data.editorTaskName"></label>
-        <div class="editor-actions" >
-            <a class="waves-effect waves-light btn-large btn-editor btn-ok">Примінити</a>
-            <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours">Не приміняти</a>
+<form id="editHoursForm" data-bind="submit: $root.updateTrackTime">
+    <div data-bind="if: $root.editMode">
+        <div class="hours-editor">
+            <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
+            <label for="editHoursInput" data-bind="text: $data.editorTaskName"></label>
+            <div class="progress" data-bind="visible: $root.saveInProgress">
+                <div class="indeterminate"></div>
+            </div>
+            <div class="editor-actions" >
+                <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateTrackTime, attr: {disabled: $root.saveInProgress}">Примінити</a>
+                <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 <div data-bind="ifnot: $root.editMode">
     <div data-bind="foreach: months" class="calendar-wrapper">
@@ -35,7 +39,7 @@
             </div>
             <div>
             <div data-bind="click: $root.changeMode, if: $root.calendarMode">
-                <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">menu</i></a>
+                <a class="waves-effect waves-light btn menu-button pulse"><i class="material-icons menu-icon">menu</i></a>
             </div>
             <div data-bind="click: $root.changeMode, ifnot: $root.calendarMode">
                 <a class="waves-effect waves-light btn menu-button"><i class="material-icons menu-icon">apps</i></a>
@@ -55,6 +59,7 @@
                 </div>
             </div>
         </div>
+
         <div data-bind="ifnot: $root.calendarMode" class="tracks-wrapper">
             <div data-bind="foreach: $data.tracks">
                 <div class="day-title" data-bind="attr: { id: 'DAY_' + $data.day }">

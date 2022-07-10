@@ -54,7 +54,8 @@ body {
 }
 
 .issue-subject {
-    font-size: 2vw;
+    font-weight: bold;
+    font-size: 2.5vw;
     padding: 2vw!important;
     padding-left: 1vw!important;
     padding-right: 1vw!important;
@@ -83,6 +84,7 @@ body {
 
 .issue-project-name-wrapper {
     font-size: 1.4vw;
+    font-weight: bold;
     padding: 0.5vw!important;
     padding-left: 1vw!important;
 }
@@ -153,14 +155,13 @@ body {
     height: 20vw!important;
 }
 .hours-editor label {
-    font-size: 2vw;
+    font-size: 2.5vw;
     margin-bottom: 1vw;
-}
 }
 
 .btn-editor {
     width: 50%;
-    font-size: 4vw;
+    font-size: 3vw;
     height: 10vw;
     line-height: 10vw;
 }
