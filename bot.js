@@ -5,8 +5,11 @@ function AppViewModel(beData) {
     const monthsUk = ['Cіч.', 'Лют.', 'Бер.', 'Квіт.', 'Трав.', 'Черв.', 'Лип.', 'Серп.', 'Вер.', 'Жовт.', 'Лист.', 'Груд.'];
     const monthsNameUk = ['Cічень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
 
+    this.context = {};
+
     this.calendarMode = ko.observable(true);
-    this.months = getMonths();
+    this.monthReference = getMonths();
+    this.months = ko.observableArray(this.monthReference);
     this.changeMode = function() {
         self.calendarMode(!self.calendarMode());
     }
@@ -37,15 +40,31 @@ function AppViewModel(beData) {
         self.trackHours("");
         self.editType('hours');
         $('#editHoursInput').focus();
+        self.context = context;
     }
     this.closeEditHours = function() {
         self.saveInProgress(false);
         self.editMode(false);
         $('html,body').animate({scrollTop: self.scrollPosition}, 10);
+        self.context = null;
     }
     this.updateTrackTime = function() {
-        console.log(self.trackHours());
+        const context = self.context;
         self.saveInProgress(true);
+        update({
+            orderId: self.context.order_id,
+            hours: self.trackHours(),
+            taskId: self.context.issue_id,
+            date: self.context.spent_on,
+            id: self.context.id
+        }, function() {
+            context.hours = self.trackHours();
+            self.months(self.monthReference);
+            self.closeEditHours();
+        }, function() {
+            self.saveInProgress(false);
+        });
+        self.context = null;
     }
 
     // ================================
@@ -53,6 +72,7 @@ function AppViewModel(beData) {
     this.editorOrders = getBEData().data.orders;
     this.editorOrder = ko.observable("");
     this.openEditOrders = function(context) {
+        self.context = context;
         self.saveInProgress(false);
         self.scrollPosition = document.documentElement.scrollTop;
         self.editMode(true);
@@ -67,10 +87,28 @@ function AppViewModel(beData) {
         self.saveInProgress(false);
         self.editMode(false);
         $('html,body').animate({scrollTop: self.scrollPosition}, 10);
+        self.context = null;
     }
     this.updateOrders = function() {
-        console.log(self.trackHours());
+        console.log(self.editorOrder());
+        const context = self.context;
         self.saveInProgress(true);
+        update({
+            orderId: self.editorOrder(),
+            hours: self.context.hours,
+            taskId: self.context.issue_id,
+            date: self.context.spent_on,
+            id: self.context.id
+        }, function() {
+            context.order_id = self.editorOrder()
+            let order = getBEData().data.orders.find(it => it.id === context.order_id * 1);
+            context.orderName = order.name;
+            self.months(self.monthReference);
+            self.closeEditHours();
+        }, function() {
+            self.saveInProgress(false);
+        });
+        self.context = null;
     }
 
     // ================================
@@ -173,19 +211,42 @@ function AppViewModel(beData) {
     }
 }
 
+// ==================================
+
+const urlParams = new URLSearchParams(window.location.search);
+const access_token = urlParams.get('access_token');
+
+function update(json, success, error) {
+    $.ajax({
+        url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/update?access_token=" + access_token,
+        method: "POST",
+        data: json,
+        success: function(response) {
+            success();
+        },
+        error: function(error){
+            console.log(error);
+            error();
+        }
+    });
+
+}
+
 function initView(data) {
     let appViewModel = new AppViewModel(data);
     console.log(appViewModel);
     ko.applyBindings(appViewModel);
     Telegram.WebApp.ready();
+    return appViewModel;
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const access_token = urlParams.get('access_token');
-$.ajax({
-    url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/timetrack?access_token=" + access_token,
-}).done(function( data ) {
-    console.log(data);
-    initView(data)
-});
+function init() {
+    $.ajax({
+        url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/timetrack?access_token=" + access_token,
+    }).done(function (data) {
+        console.log(data);
+        initView(data)
+    });
+}
 
+init();
