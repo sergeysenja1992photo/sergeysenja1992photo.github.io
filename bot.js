@@ -51,15 +51,17 @@ function AppViewModel(beData) {
     this.updateTrackTime = function() {
         const context = self.context;
         self.saveInProgress(true);
+        let trackHours = self.trackHours();
+        trackHours = trackHours || trackHours === 0 ? trackHours : context.hours
         update({
             orderId: self.context.order_id,
-            hours: self.trackHours(),
+            hours: trackHours,
             taskId: self.context.issue_id,
             date: self.context.spent_on,
             id: self.context.id
         }, function() {
-            context.hours = self.trackHours();
-            self.months(self.monthReference);
+            context.hours = trackHours;
+            self.months(getMonths());
             self.closeEditHours();
         }, function() {
             self.saveInProgress(false);
@@ -103,7 +105,7 @@ function AppViewModel(beData) {
             context.order_id = self.editorOrder()
             let order = getBEData().data.orders.find(it => it.id === context.order_id * 1);
             context.orderName = order.name;
-            self.months(self.monthReference);
+            self.months(getMonths());
             self.closeEditHours();
         }, function() {
             self.saveInProgress(false);
@@ -136,7 +138,7 @@ function AppViewModel(beData) {
                 tracks.push({
                     day: day,
                     tracks: dataTracks[day],
-                    sum: timeTracksByDay[day]
+                    sum: dataTracks[day]?.reduce((a, b) => a * 1 + (b.hours || 0) * 1, 0)
                 });
             }
         }
@@ -147,16 +149,20 @@ function AppViewModel(beData) {
         let now = LocalDate.now();
         let prevMonth = now.minusMonths(1);
         const beData = getBEData().data;
+        const prevMonthTracks = getTracks(prevMonth);
+        const currentMonthTracks = getTracks(now);
+        const prevMonthSpendTime = prevMonthTracks?.reduce((a, b) => a * 1 + (b.sum || 0) * 1, 0)
+        const currentMonthSpendTime = currentMonthTracks?.reduce((a, b) => a * 1 + (b.sum || 0) * 1, 0)
         return [{
             month: monthsNameUk[prevMonth.month().value() - 1],
             days: getDays(prevMonth),
-            track: ` (${beData.prevMonthSpendTime} / ${beData.prevMonthWorkingHours})`,
-            tracks: getTracks(prevMonth)
+            track: ` (${prevMonthSpendTime} / ${beData.prevMonthWorkingHours})`,
+            tracks: prevMonthTracks
         }, {
             month: monthsNameUk[now.month().value() - 1] ,
             days: getDays(now),
-            track: ` (${beData.currentMonthSpendTime} / ${beData.currentMonthWorkingHours})`,
-            tracks: getTracks(now)
+            track: ` (${currentMonthSpendTime} / ${beData.currentMonthWorkingHours})`,
+            tracks: currentMonthTracks
         }];
     }
 

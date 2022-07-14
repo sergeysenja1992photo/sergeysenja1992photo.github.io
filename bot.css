@@ -219,3 +219,7 @@ body {
 .editor-actions {
     display: flex;
 }
+
+.add-button {
+    background-color: #37474f;
+}
