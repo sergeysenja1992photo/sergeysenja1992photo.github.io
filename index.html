@@ -15,57 +15,6 @@
 </head>
 <body style="display: none;" data-bind="visible: true">
 
-<div data-bind="if: $root.editMode">
-    <div data-bind="if: $root.editType() == 'hours'">
-        <form id="editHoursForm" data-bind="submit: $root.updateTrackTime">
-            <div class="hours-editor inline">
-                <label for="editHoursInput" data-bind="text: $data.editorTaskDate"></label>
-                <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
-                <span data-bind="text: $data.editorTaskName"></span>
-
-                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
-                    <div class="indeterminate"></div>
-                </div>
-                <div class="editor-actions" >
-                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateTrackTime, attr: {disabled: $root.saveInProgress}">Примінити</a>
-                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<div data-bind="if: $root.editMode">
-    <div data-bind="if: $root.editType() == 'orders'">
-        <form id="editOrdersForm" data-bind="submit: $root.updateOrders">
-            <div class="orders-editor inline">
-
-                <div class="input-field col s12">
-                    <div class="order-select">
-                        <span data-bind="text: $data.editorTaskDate"></span>
-                        <select id="order-select" data-bind="foreach: $root.editorOrders, value: $root.editorOrder">
-                            <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
-                        </select>
-                    </div>
-                    <div style="margin: 1vw;"></div>
-                    <span class="order-task-name" data-bind="text: $data.editorTaskName"></span>
-                    <div style="margin: 1vw;"></div>
-                </div>
-
-                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
-                    <div class="indeterminate"></div>
-                </div>
-
-                <div class="editor-actions" >
-                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateOrders, attr: {disabled: $root.saveInProgress}">Примінити</a>
-                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditOrders, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <div data-bind="ifnot: $root.editMode">
     <div data-bind="foreach: months" class="calendar-wrapper">
         <div class="month-title">
@@ -144,11 +93,106 @@
     </div>
 
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light add-button">
+        <a class="btn-floating btn-large waves-effect waves-light add-button" data-bind="click: $root.openAddTimeTrack">
             <i class="large material-icons">add</i>
         </a>
     </div>
 
+</div>
+
+<div data-bind="if: $root.editMode">
+    <div data-bind="if: $root.editType() == 'hours'">
+        <form id="editHoursForm" data-bind="submit: $root.updateTrackTime">
+            <div class="hours-editor inline">
+                <label for="editHoursInput" data-bind="text: $data.editorTaskDate"></label>
+                <input id="editHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
+                <span data-bind="text: $data.editorTaskName"></span>
+
+                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
+                    <div class="indeterminate"></div>
+                </div>
+                <div class="editor-actions" >
+                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateTrackTime, attr: {disabled: $root.saveInProgress}">Примінити</a>
+                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditHours, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div data-bind="if: $root.editMode">
+    <div data-bind="if: $root.editType() == 'orders'">
+        <form id="editOrdersForm" data-bind="submit: $root.updateOrders">
+            <div class="orders-editor inline">
+
+                <div class="input-field col s12">
+                    <div class="order-select">
+                        <span data-bind="text: $data.editorTaskDate"></span>
+                        <select id="order-select" data-bind="foreach: $root.editorOrders, value: $root.editorOrder">
+                            <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
+                        </select>
+                    </div>
+                    <div style="margin: 1vw;"></div>
+                    <span class="order-task-name" data-bind="text: $data.editorTaskName"></span>
+                    <div style="margin: 1vw;"></div>
+                </div>
+
+                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
+                    <div class="indeterminate"></div>
+                </div>
+
+                <div class="editor-actions" >
+                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.updateOrders, attr: {disabled: $root.saveInProgress}">Примінити</a>
+                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeEditOrders, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div data-bind="if: $root.editMode">
+    <div data-bind="if: $root.editType() == 'add_track_time'">
+        <form data-bind="submit: $root.addTimeTrack">
+            <div class="add-task inline">
+                <label for="addTimeDateInput">День</label>
+                <input id="addTimeDateInput" class="datepicker" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskDate"  type="text" placeholder="Виберіть дату">
+            </div>
+            <div class="add-task inline">
+                <label for="addTimeTaskInput">Тасочка</label>
+                <input id="addTimeTaskInput" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskName"  type="text" placeholder="Введіть назву таски">
+            </div>
+            <div class="add-task inline">
+                <label for="addTimeTrackEditHoursInput" data-bind="text: $data.editorTaskDate"></label>
+                <input id="addTimeTrackEditHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
+            </div>
+            <div class="add-task inline">
+
+                <div class="input-field col s12">
+                    <div class="add-task-select">
+                        <span data-bind="text: $data.editorTaskDate"></span>
+                        <select id="add-time-track-order-select" data-bind="foreach: $root.editorOrders, value: $root.editorOrder">
+                            <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
+                        </select>
+                    </div>
+                    <div style="margin: 1vw;"></div>
+                </div>
+            </div>
+            <div>
+                <div class="progress" style="display: none;" data-bind="visible: $root.saveInProgress">
+                    <div class="indeterminate"></div>
+                </div>
+
+                <div class="editor-actions" >
+                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.addTimeTrack, attr: {disabled: $root.saveInProgress}">Примінити</a>
+                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeAddTimeTrack, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>

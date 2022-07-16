@@ -60,13 +60,13 @@ function AppViewModel(beData) {
             date: self.context.spent_on,
             id: self.context.id
         }, function() {
+            self.context = null;
             context.hours = trackHours;
             self.months(getMonths());
             self.closeEditHours();
         }, function() {
             self.saveInProgress(false);
         });
-        self.context = null;
     }
 
     // ================================
@@ -81,7 +81,7 @@ function AppViewModel(beData) {
         self.editType('orders');
         self.editorTaskName(context.subject);
         self.editorTaskDate(context.spent_on);
-        self.editorOrder(context.order_id)
+        self.editorOrder(context.order_id || getBEData().data.recommendedOrder[context.project_id])
         self.trackHours("");
         $('#order-select').formSelect();
     }
@@ -102,6 +102,7 @@ function AppViewModel(beData) {
             date: self.context.spent_on,
             id: self.context.id
         }, function() {
+            self.context = null;
             context.order_id = self.editorOrder()
             let order = getBEData().data.orders.find(it => it.id === context.order_id * 1);
             context.orderName = order.name;
@@ -110,7 +111,29 @@ function AppViewModel(beData) {
         }, function() {
             self.saveInProgress(false);
         });
-        self.context = null;
+    }
+
+    // ================================
+
+    this.editorTaskName = ko.observable("");
+    this.openAddTimeTrack = function() {
+        self.saveInProgress(false);
+        self.scrollPosition = document.documentElement.scrollTop;
+        self.editMode(true);
+        self.editType('add_track_time');
+        self.trackHours("");
+        self.saveInProgress(false);
+        self.editorOrder("");
+        $('#add-time-track-order-select').formSelect();
+        $('.datepicker').datepicker();
+    }
+    this.closeAddTimeTrack = function() {
+        self.saveInProgress(false);
+        self.editMode(false);
+        $('html,body').animate({scrollTop: self.scrollPosition}, 10);
+    }
+    this.addTimeTrack = function() {
+
     }
 
     // ================================
@@ -222,7 +245,7 @@ function AppViewModel(beData) {
 const urlParams = new URLSearchParams(window.location.search);
 const access_token = urlParams.get('access_token');
 
-function update(json, success, error) {
+function update(json, success, errorCallback) {
     $.ajax({
         url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/update?access_token=" + access_token,
         method: "POST",
@@ -232,7 +255,7 @@ function update(json, success, error) {
         },
         error: function(error){
             console.log(error);
-            error();
+            errorCallback();
         }
     });
 
