@@ -138,7 +138,7 @@ function AppViewModel(beData) {
                 tracks.push({
                     day: day,
                     tracks: dataTracks[day],
-                    sum: dataTracks[day]?.reduce((a, b) => a * 1 + (b.hours || 0) * 1, 0)
+                    sum: (dataTracks[day] || []).reduce((a, b) => a * 1 + (b.hours || 0) * 1, 0)
                 });
             }
         }
@@ -151,8 +151,8 @@ function AppViewModel(beData) {
         const beData = getBEData().data;
         const prevMonthTracks = getTracks(prevMonth);
         const currentMonthTracks = getTracks(now);
-        const prevMonthSpendTime = prevMonthTracks?.reduce((a, b) => a * 1 + (b.sum || 0) * 1, 0)
-        const currentMonthSpendTime = currentMonthTracks?.reduce((a, b) => a * 1 + (b.sum || 0) * 1, 0)
+        const prevMonthSpendTime = (prevMonthTracks || []).reduce((a, b) => a * 1 + (b.sum || 0) * 1, 0)
+        const currentMonthSpendTime = (currentMonthTracks || []).reduce((a, b) => a * 1 + (b.sum || 0) * 1, 0)
         return [{
             month: monthsNameUk[prevMonth.month().value() - 1],
             days: getDays(prevMonth),
