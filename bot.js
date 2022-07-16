@@ -125,8 +125,22 @@ function AppViewModel(beData) {
         self.saveInProgress(false);
         self.editorOrder("");
         $('#add-time-track-order-select').formSelect();
-        $('.datepicker').datepicker();
+
+        const elems = document.querySelectorAll('.datepicker');
+        const instances = M.Datepicker.init(elems, {
+            format: 'yyyy-mm-dd'
+        });
+
+        if (self.editorTaskDate()) {
+            const date = new Date(self.editorTaskDate());
+            $('.datepicker').datepicker('setDate', date);
+        } else {
+            self.editorTaskDate(LocalDate.now().toString())
+            const date = new Date(LocalDate.now().toString());
+            $('.datepicker').datepicker('setDate', date);
+        }
     }
+
     this.closeAddTimeTrack = function() {
         self.saveInProgress(false);
         self.editMode(false);
@@ -142,6 +156,7 @@ function AppViewModel(beData) {
         setTimeout(function() {
             self.calendarMode(false);
             let offset = $('#DAY_' + context.date).offset();
+            self.editorTaskDate(context.date);
             if (offset) {
                 $('html,body').animate({scrollTop: offset.top}, 200);
             }

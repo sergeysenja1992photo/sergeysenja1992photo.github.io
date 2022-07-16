@@ -159,15 +159,15 @@
         <form data-bind="submit: $root.addTimeTrack">
             <div class="add-task inline">
                 <label for="addTimeDateInput">День</label>
-                <input id="addTimeDateInput" class="datepicker" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskDate"  type="text" placeholder="Виберіть дату">
+                <input id="addTimeDateInput" class="datepicker add-task-select-input" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskDate"  type="text" placeholder="Виберіть дату">
             </div>
             <div class="add-task inline">
-                <label for="addTimeTaskInput">Тасочка</label>
-                <input id="addTimeTaskInput" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskName"  type="text" placeholder="Введіть назву таски">
+                <label for="addTimeTaskInput" class="add-task-select-label">Тасочка</label>
+                <input id="addTimeTaskInput" class="add-task-select-input" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskName"  type="text" placeholder="Введіть назву таски">
             </div>
             <div class="add-task inline">
-                <label for="addTimeTrackEditHoursInput" data-bind="text: $data.editorTaskDate"></label>
-                <input id="addTimeTrackEditHoursInput" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
+                <label for="addTimeTrackEditHoursInput" data-bind="text: $data.editorTaskDate" class="add-task-select-label"></label>
+                <input id="addTimeTrackEditHoursInput" class="add-task-select-input" data-bind="attr: { placeholder: $root.editHours, disabled: $root.saveInProgress }, textInput: trackHours"  type="number" inputmode="numeric">
             </div>
             <div class="add-task inline">
 

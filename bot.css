@@ -238,34 +238,21 @@ body {
 .add-task input::placeholder {
     font-size: 7vw;
 }
-.add-task input {
+.add-task .add-task-select-input {
     font-size: 7vw!important;
     line-height: 8vw;
     height: 8vw!important;
 }
-.add-task label {
+.add-task .add-task-select-label {
+    left: 0!important;
     font-size: 2.5vw;
     margin-bottom: 1vw;
-}
-.add-task span {
-    font-size: 2.5vw;
-    margin-bottom: 1vw;
-    color: #9e9e9e;
 }
 
 .add-task {
     margin: 5vw;
     height: 100%;
-}
-.add-task label {
-    left: 0!important;
-    font-size: 2.5vw;
-    margin-bottom: 1vw;
-}
-.add-task span {
-    font-size: 2.5vw;
-    margin-bottom: 1vw;
-    color: #9e9e9e;
+    margin-top: 1vw;
 }
 
 .add-task-action-margin {
