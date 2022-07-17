@@ -143,7 +143,7 @@ function AppViewModel(beData) {
 
         const elems = document.querySelectorAll('.datepicker');
         const instances = M.Datepicker.init(elems, {
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd', firstDay: 1
         });
 
         if (self.editorTaskDate()) {
@@ -177,6 +177,16 @@ function AppViewModel(beData) {
     }
     this.addTimeTrack = function() {
         self.saveInProgress(true);
+        update({
+            orderId: self.addTaskEditorOrder(),
+            hours: self.trackHours(),
+            taskId: self.addTrackContext.data.taskId,
+            date: self.editorTaskDate()
+        }, function() {
+            location.reload();
+        }, function() {
+            self.saveInProgress(false);
+        });
     }
     this.setRecommendedOrder = function(orderId) {
         self.addTaskEditorOrder(orderId);
