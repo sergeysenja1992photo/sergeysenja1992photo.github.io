@@ -35,6 +35,7 @@ function AppViewModel(beData) {
 
     this.editHours = ko.observable(0);
     this.editorTaskName = ko.observable("");
+    this.hasTaskName =  ko.observable(false);
     this.editorTaskDate = ko.observable("");
     this.trackHours = ko.observable("");
     this.openEditHours = function(context) {
@@ -134,6 +135,7 @@ function AppViewModel(beData) {
         self.trackHours("");
         self.saveInProgress(false);
         self.addTaskEditorOrder("");
+        self.editorTaskName("");
         self.editMode(true);
         self.invalid(true);
 
@@ -159,6 +161,13 @@ function AppViewModel(beData) {
             self.addTrackContext.hours = hours;
             self.updateValidate();
         });
+        self.editorTaskName.subscribe(function (taskName) {
+            if (taskName) {
+                self.hasTaskName(true);
+            } else {
+                self.hasTaskName(false);
+            }
+        });
     }
 
     this.closeAddTimeTrack = function() {
@@ -179,12 +188,18 @@ function AppViewModel(beData) {
             self.invalid(true);
         }
     }
+    this.cleanTaskInput = function () {
+        self.addTrackContext.data = {};
+        self.addTaskEditorOrder("");
+        self.updateValidate();
+        self.editorTaskName("")
+    }
 
     function initTasksSearch() {
         $('#addTimeTaskInput').devbridgeAutocomplete({
             serviceUrl: baseUrl + '/tasks?access_token=' + access_token,
             onSelect: function (suggestion) {
-                console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                self.editorTaskName(suggestion.value);
                 self.addTrackContext.data = suggestion.data;
                 let projectId = suggestion.data.projectId;
                 let recommendedOrder = getBEData().data.recommendedOrder[projectId];
@@ -204,16 +219,24 @@ function AppViewModel(beData) {
 
     // ================================
 
-    this.moveToDay = function(context) {
+    this.moveToDay = function(incontext) {
+        self.calendarMode(false);
+        const context = incontext;
         setTimeout(function() {
-            self.calendarMode(false);
-            let offset = $('#DAY_' + context.date).offset();
-            self.editorTaskDate(context.date);
+            let date = context.date;
+            let offset = $('#DAY_' + date).offset();
+            while(!offset && date) {
+                date = LocalDate.parse(date).minusDays(1).toString();
+                offset = $('#DAY_' + date).offset();
+                if (LocalDate.parse(date).isBefore(LocalDate.parse(context.date).minusMonths(2))) {
+                    break;
+                }
+            }
+            self.editorTaskDate(date);
             if (offset) {
                 $('html,body').animate({scrollTop: offset.top}, 200);
             }
         }, 200);
-
     }
 
     function getTracks(now) {

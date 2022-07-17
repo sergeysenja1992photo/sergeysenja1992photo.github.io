@@ -255,6 +255,23 @@ body {
     margin-top: 1vw;
 }
 
+.add-task-autocomplete {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.add-task-autocomplete .addTimeTaskInputClear {
+    margin-top: 5vw;
+    font-size: 5vw;
+}
+
+.add-task-autocomplete .addTimeTaskInputClear > i {
+    font-size: 5vw;
+    color: #999999;
+    cursor: pointer;
+}
+
 .add-task-autocomplete .dropdown-content li>a, .dropdown-content li>span {
     font-size: 5vw;
     line-height: 6vw;

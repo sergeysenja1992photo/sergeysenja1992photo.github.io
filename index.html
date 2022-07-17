@@ -159,8 +159,13 @@
         <form data-bind="submit: $root.addTimeTrack">
             <div class="input-field">
                 <div class="add-task add-task-autocomplete inline">
-                    <label for="addTimeTaskInput" class="add-task-select-label">Тасочка</label>
-                    <input id="addTimeTaskInput" class="add-task-select-input autocomplete" data-bind="attr: { disabled: $root.saveInProgress }"  type="text" placeholder="Введіть назву таски">
+                    <div>
+                        <label for="addTimeTaskInput" class="add-task-select-label">Тасочка</label>
+                        <input id="addTimeTaskInput" class="add-task-select-input autocomplete" data-bind="attr: { disabled: $root.saveInProgress }, textInput: $root.editorTaskName"  type="text" placeholder="Введіть назву таски">
+                    </div>
+                    <div class="addTimeTaskInputClear">
+                        <i class="material-icons" data-bind="click: $root.cleanTaskInput, if: $root.hasTaskName">close</i>
+                    </div>
                 </div>
             </div>
             <div class="add-task inline">
