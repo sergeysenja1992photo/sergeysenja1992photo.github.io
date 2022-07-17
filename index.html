@@ -157,13 +157,15 @@
 <div data-bind="if: $root.editMode">
     <div data-bind="if: $root.editType() == 'add_track_time'">
         <form data-bind="submit: $root.addTimeTrack">
+            <div class="input-field">
+                <div class="add-task add-task-autocomplete inline">
+                    <label for="addTimeTaskInput" class="add-task-select-label">Тасочка</label>
+                    <input id="addTimeTaskInput" class="add-task-select-input autocomplete" data-bind="attr: { disabled: $root.saveInProgress }"  type="text" placeholder="Введіть назву таски">
+                </div>
+            </div>
             <div class="add-task inline">
                 <label for="addTimeDateInput">День</label>
                 <input id="addTimeDateInput" class="datepicker add-task-select-input" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskDate"  type="text" placeholder="Виберіть дату">
-            </div>
-            <div class="add-task inline">
-                <label for="addTimeTaskInput" class="add-task-select-label">Тасочка</label>
-                <input id="addTimeTaskInput" class="add-task-select-input" data-bind="attr: { disabled: $root.saveInProgress }, textInput: editorTaskName"  type="text" placeholder="Введіть назву таски">
             </div>
             <div class="add-task inline">
                 <label for="addTimeTrackEditHoursInput" data-bind="text: $data.editorTaskDate" class="add-task-select-label"></label>
@@ -174,7 +176,7 @@
                 <div class="input-field col s12">
                     <div class="add-task-select">
                         <span data-bind="text: $data.editorTaskDate"></span>
-                        <select id="add-time-track-order-select" data-bind="foreach: $root.editorOrders, value: $root.editorOrder">
+                        <select id="add-time-track-order-select" data-bind="foreach: $root.editorOrders, value: $root.addTaskEditorOrder">
                             <option data-bind="text: $data.name, attr: {value: $data.id}"></option>
                         </select>
                     </div>
@@ -186,9 +188,17 @@
                     <div class="indeterminate"></div>
                 </div>
 
-                <div class="editor-actions" >
-                    <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.addTimeTrack, attr: {disabled: $root.saveInProgress}">Примінити</a>
-                    <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeAddTimeTrack, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                <div data-bind="ifnot: $root.saveInProgress">
+                    <div class="editor-actions" data-bind="attr: {disabled: $root.invalid}">
+                        <a class="waves-effect waves-light btn-large btn-editor btn-ok" data-bind="click: $root.addTimeTrack, attr: {disabled: $root.invalid}">Примінити</a>
+                        <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeAddTimeTrack, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                    </div>
+                </div>
+                <div data-bind="if: $root.saveInProgress">
+                    <div class="editor-actions" data-bind="attr: {disabled: $root.invalid}">
+                        <a class="waves-effect waves-light btn-large btn-editor btn-ok" disabled="true">Примінити</a>
+                        <a class="waves-effect waves-light btn-large btn-editor btn-cancel" data-bind="click: $root.closeAddTimeTrack, attr: {disabled: $root.saveInProgress}">Не приміняти</a>
+                    </div>
                 </div>
             </div>
         </form>
@@ -200,8 +210,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-joda/1.7.1/js-joda.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@js-joda/locale_en@4.7.0/dist/index.min.js"></script>
-<script src="/bot.js?5"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
+<script src="/bot.js?5"></script>
 </body>
 </html>
 

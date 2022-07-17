@@ -255,6 +255,11 @@ body {
     margin-top: 1vw;
 }
 
+.add-task-autocomplete .dropdown-content li>a, .dropdown-content li>span {
+    font-size: 5vw;
+    line-height: 6vw;
+}
+
 .add-task-action-margin {
     margin-block: 5vw;
 }
@@ -269,3 +274,22 @@ body {
     font-size: 7vw;
     line-height: 8vw;
 }
+
+
+.autocomplete-suggestions {
+    border: 3px solid #b2b2b2;
+    background: #FFF;
+    overflow-y: auto;
+    max-height: 90vh!important;
+}
+
+.autocomplete-suggestion {
+    font-size: 4vw;
+    padding: 2px 5px;
+    border-top: 2px solid #dedede;
+}
+.autocomplete-selected {
+    background: #dedede;
+    font-weight: bold;
+}
+

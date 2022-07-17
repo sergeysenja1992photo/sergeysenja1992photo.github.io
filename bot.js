@@ -1,3 +1,10 @@
+
+const urlParams = new URLSearchParams(window.location.search);
+const access_token = urlParams.get('access_token');
+const baseUrl = 'https://us-central1-silicon-keel-290919.cloudfunctions.net';
+
+// ==================================================
+
 function AppViewModel(beData) {
     const self = this;
     const LocalDate = JSJoda.LocalDate;
@@ -115,15 +122,21 @@ function AppViewModel(beData) {
 
     // ================================
 
+    this.addTrackContext = {};
     this.editorTaskName = ko.observable("");
+    this.invalid = ko.observable(true);
+    self.addTaskEditorOrder = ko.observable("");
     this.openAddTimeTrack = function() {
+        self.addTrackContext = {};
         self.saveInProgress(false);
         self.scrollPosition = document.documentElement.scrollTop;
-        self.editMode(true);
         self.editType('add_track_time');
         self.trackHours("");
         self.saveInProgress(false);
-        self.editorOrder("");
+        self.addTaskEditorOrder("");
+        self.editMode(true);
+        self.invalid(true);
+
         $('#add-time-track-order-select').formSelect();
 
         const elems = document.querySelectorAll('.datepicker');
@@ -139,6 +152,13 @@ function AppViewModel(beData) {
             const date = new Date(LocalDate.now().toString());
             $('.datepicker').datepicker('setDate', date);
         }
+        initTasksSearch();
+        $('#addTimeTaskInput').focus();
+
+        self.trackHours.subscribe(function (hours) {
+            self.addTrackContext.hours = hours;
+            self.updateValidate();
+        });
     }
 
     this.closeAddTimeTrack = function() {
@@ -147,8 +167,40 @@ function AppViewModel(beData) {
         $('html,body').animate({scrollTop: self.scrollPosition}, 10);
     }
     this.addTimeTrack = function() {
-
+        self.saveInProgress(true);
     }
+    this.setRecommendedOrder = function(orderId) {
+        self.addTaskEditorOrder(orderId);
+    }
+    this.updateValidate = function() {
+        if (self.addTrackContext.data && self.addTrackContext.data.issueId && self.addTrackContext.hours) {
+            self.invalid(false);
+        } else {
+            self.invalid(true);
+        }
+    }
+
+    function initTasksSearch() {
+        $('#addTimeTaskInput').devbridgeAutocomplete({
+            serviceUrl: baseUrl + '/tasks?access_token=' + access_token,
+            onSelect: function (suggestion) {
+                console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                self.addTrackContext.data = suggestion.data;
+                let projectId = suggestion.data.projectId;
+                let recommendedOrder = getBEData().data.recommendedOrder[projectId];
+                self.setRecommendedOrder(recommendedOrder);
+                $('#add-time-track-order-select').formSelect();
+                self.updateValidate();
+            },
+            onSearchStart: function(params) {
+                self.addTrackContext.data = {};
+                self.updateValidate();
+            },
+            noCache: true,
+            minChars: 0
+        });
+    }
+
 
     // ================================
 
@@ -257,12 +309,10 @@ function AppViewModel(beData) {
 
 // ==================================
 
-const urlParams = new URLSearchParams(window.location.search);
-const access_token = urlParams.get('access_token');
 
 function update(json, success, errorCallback) {
     $.ajax({
-        url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/update?access_token=" + access_token,
+        url: baseUrl + "/update?access_token=" + access_token,
         method: "POST",
         data: json,
         success: function(response) {
@@ -276,6 +326,7 @@ function update(json, success, errorCallback) {
 
 }
 
+
 function initView(data) {
     let appViewModel = new AppViewModel(data);
     console.log(appViewModel);
@@ -286,7 +337,7 @@ function initView(data) {
 
 function init() {
     $.ajax({
-        url: "https://us-central1-silicon-keel-290919.cloudfunctions.net/timetrack?access_token=" + access_token,
+        url: baseUrl + "/timetrack?access_token=" + access_token,
     }).done(function (data) {
         console.log(data);
         initView(data)
