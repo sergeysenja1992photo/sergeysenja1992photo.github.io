@@ -234,6 +234,7 @@ function AppViewModel(beData) {
         const context = incontext;
         setTimeout(function() {
             let date = context.date;
+            self.editorTaskDate(date);
             let offset = $('#DAY_' + date).offset();
             while(!offset && date) {
                 date = LocalDate.parse(date).minusDays(1).toString();
@@ -242,7 +243,6 @@ function AppViewModel(beData) {
                     break;
                 }
             }
-            self.editorTaskDate(date);
             if (offset) {
                 $('html,body').animate({scrollTop: offset.top}, 200);
             }
